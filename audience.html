@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Audience member</title>
+    <script src="https://unpkg.com/peerjs@1.2.0/dist/peerjs.min.js"></script>
+</head>
+<body>
+<h2>enter code</h2>
+<input id="code">
+<button id="code_given">submit</button>
+<script>
+
+
+    const peer = new Peer();
+
+    peer.on('connection', function(conn) {
+        conn.on('data', function(data){
+            // Will print 'hi!'
+            console.log('arrived at audience:', data);
+        });
+    });
+
+    document.getElementById('code_given').onclick = () => {
+        const code = document.getElementById('code').value;
+        const conn = peer.connect(code);
+        console.log('connecting to '+ code)
+        // on open will be launch when you successfully connect to PeerServer
+        conn.on('open', function () {
+            // here you have conn.id
+            console.log('My peer ID is: ' + id);
+        });
+        conn.send('Hello!');
+
+    };
+
+</script>
+
+</body>
+</html>

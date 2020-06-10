@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Game player</title>
+    <script src="https://unpkg.com/peerjs@1.2.0/dist/peerjs.min.js"></script>
+</head>
+<body>
+<h2>code = <span id="code"></span></h2>
+<script>
+
+    function randomString(len, an) {
+        an = an && an.toLowerCase();
+        var str = "",
+            i = 0,
+            min = an == "a" ? 10 : 0,
+            max = an == "n" ? 10 : 62;
+        for (; i++ < len;) {
+            var r = Math.random() * (max - min) + min << 0;
+            str += String.fromCharCode(r += r > 9 ? r < 36 ? 55 : 61 : 48);
+        }
+        return str;
+    }
+
+    const code = randomString(4);
+    document.getElementById('code').innerText = code;
+
+    var peer = new Peer();
+
+    peer.on('connection', function(conn) {
+        conn.on('data', function(data){
+            // Will print 'hi!'
+            console.log('arrived at player:', data);
+        });
+    });
+
+    var conn = peer.connect(code);
+    // on open will be launch when you successfully connect to PeerServer
+    conn.on('open', function(){
+        // here you have conn.id
+        console.log('My peer ID is: ' + id);
+    });
+</script>
+
+</body>
+</html>
